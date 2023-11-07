@@ -29,7 +29,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
+app.UseMvcWithDefaultRoute();
 app.UseAuthorization();
 
 app.MapControllerRoute(
