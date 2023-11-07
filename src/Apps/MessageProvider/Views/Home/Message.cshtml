@@ -1,0 +1,50 @@
+﻿@model MessageProvider.Models.JobViewModel
+
+@{
+    ViewData["Title"] = "Verstuur bericht";
+}
+
+<h1>Verstuur bericht</h1>
+
+<h4>Verstuur</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Team" class="control-label"></label>
+                <select asp-for="Team" class="form-control" asp-items="@(new SelectList(Model.Teams))">
+                    <option>Kies jouw team</option>
+                </select>
+                <span asp-validation-for="Team" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MessageType" class="control-label"></label>
+                <input asp-for="MessageType" class="form-control" disabled />
+                <span asp-validation-for="MessageType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MessageCount" class="control-label"></label>
+                <input asp-for="MessageCount" class="form-control" />
+                <span asp-validation-for="MessageCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubjectId" class="control-label"></label>
+                <input asp-for="SubjectId" class="form-control" />
+                <span asp-validation-for="SubjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Verstuur" class="btn btn-primary" asp-route="Custom"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Annuleren</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
