@@ -1,4 +1,5 @@
-﻿using Azure.Messaging.ServiceBus;
+﻿using Azure.Identity;
+using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -20,7 +21,7 @@ public class ServiceBusAdapter : IServiceBusAdapter
         _logger.LogWarning($"prefix: {_options.Value.QueueNamePrefix}");
         _logger.LogWarning($"connection: {_options.Value.ConnectionString}");
         var queueName = $"{_options.Value.QueueNamePrefix}{team}";
-        await using var client = new ServiceBusClient(_options.Value.ConnectionString);
+        await using var client = new ServiceBusClient(_options.Value.ConnectionString, new DefaultAzureCredential());
         var sender = client.CreateSender(queueName);
         await sender.SendMessageAsync(new ServiceBusMessage(messageContent));
     }
