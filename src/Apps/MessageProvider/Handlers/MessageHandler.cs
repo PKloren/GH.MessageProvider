@@ -23,7 +23,7 @@ namespace MessageProvider.Handlers
 
                 if (content != string.Empty)
                 {
-                    await _serviceBusAdapter.Send(job.Team, content);
+                    await _serviceBusAdapter.Send(content);
                 }
 
                 if (job.SubjectId != null)
@@ -36,23 +36,24 @@ namespace MessageProvider.Handlers
             var id = Guid.NewGuid();
             if (job.SubjectId != null)
             {
-                Guid.TryParse(job.SubjectId, out id);
+                Guid.TryParse(job.SubjectId, out var newId);
+                if (newId != Guid.Empty)
+                    id = newId;
             }
 
             Randomizer.Seed = new Random(id.GetHashCode());
 
             var faker = new Faker<BusMessage>()
-                .RuleFor(x => x.AanvragerKey, f => id)
-                .RuleFor(x => x.BerichtType, f => job.MessageType)
                 .RuleFor(x => x.KgbVariant, f => f.PickRandom(true, false))
                 .RuleFor(x => x.DatumDagtekening, f => f.Date.Between(DateTime.Today, DateTime.Today.AddDays(14)))
                 .RuleFor(x => x.Toeslagjaar, DateTime.Today.Year + 1);
 
-            var item = faker.Generate(1);
+            var message = faker.Generate(1)[0];
+            message.ReactieDatum = message.DatumDagtekening.AddDays(14);
+            message.BerichtType = job.MessageType;
+            message.AanvragerKey = id;
 
-            item[0].ReactieDatum = item[0].DatumDagtekening.AddDays(14);
-
-            return item[0];
+            return message;
         }
     }
 }

@@ -2,5 +2,5 @@
 
 public interface IServiceBusAdapter
 { 
-    Task Send(string team, string messageContent);
+    Task Send(string messageContent);
 }

@@ -1,18 +1,10 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Humanizer;
 
 namespace MessageProvider.Models
 {
     public class JobViewModel
     {
-        public IEnumerable<string> Teams { get; set; }
-
-
-        [DisplayName("Team")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Kies het team")]
-        public string Team { get; set; } = string.Empty;
-
         [DisplayName("Berichttype")]
         [ReadOnly(true)]
         public string MessageType { get; set; } = string.Empty;
@@ -23,18 +15,7 @@ namespace MessageProvider.Models
         public int MessageCount { get; set; } = 1;
 
         [DisplayName("Aanvrager id")]
-        [StringLength(32)]
+        [StringLength(36)]
         public string? SubjectId { get; set; }
-
-        public JobViewModel()
-        {
-            var list = new List<string>();
-            for (var i = 0; i < 20; i++)
-            {
-                list.Add($"team-{i+1:D2}");
-            }
-
-            Teams = list.ToArray();
-        }
     }
 }

@@ -16,11 +16,11 @@ public class ServiceBusAdapter : IServiceBusAdapter
         _logger = logger;
     }
 
-    public async Task Send(string team, string messageContent)
+    public async Task Send(string messageContent)
     {
-        _logger.LogWarning($"prefix: {_options.Value.QueueNamePrefix}");
+        _logger.LogWarning($"prefix: {_options.Value.QueueName}");
         _logger.LogWarning($"connection: {_options.Value.ConnectionString}");
-        var queueName = $"{_options.Value.QueueNamePrefix}{team}";
+        var queueName = $"{_options.Value.QueueName}";
         await using var client = new ServiceBusClient(_options.Value.ConnectionString, new DefaultAzureCredential());
         var sender = client.CreateSender(queueName);
         await sender.SendMessageAsync(new ServiceBusMessage(messageContent));
